@@ -32,6 +32,18 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    // Define the relationship
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
+    }
+
+    public function setTitleAttribute($value)
+    {
+        $this->attributes['title'] = $value;
+        // It will tansfer to slug format
+        $this->attributes['slug'] = Str::slug($value);
+    }
     /**
      * The attributes that should be cast to native types.
      *
