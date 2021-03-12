@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Question extends Model
 {
@@ -13,5 +14,9 @@ class Question extends Model
         return $this->belongsTo(User::class);
     }
     // $question = Question::find(1);
-
+    public function setTitleAttribute($value) {
+        $this->attributes['title'] = $value;
+        // It will tansfer to slug format
+        $this->attributes['slug'] = Str::slug($value);
+    }
 }

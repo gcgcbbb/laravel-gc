@@ -22,6 +22,7 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        // Define which column will be filled with which value;
         return [
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
