@@ -13,7 +13,7 @@ class Question extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
-    // $question = Question::find(1);
+
     public function setTitleAttribute($value) {
         $this->attributes['title'] = $value;
         // It will tansfer to slug format
