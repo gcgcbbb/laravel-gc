@@ -31,4 +31,16 @@ class Question extends Model
     {
         return $this->created_at->diffForHumans();
     }
+
+    public function getStatusAttribute()
+    {
+        // Return three different statuses for three diffrent conditions;
+        if ($this->answers > 0) {
+            if ($this->best_answer_id){
+                return "answered-accepted";
+            }
+            return "answered";
+        }
+        return "unanswered";
+    }
 }
