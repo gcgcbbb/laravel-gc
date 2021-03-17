@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex align-items-center">
-                        <h2>Ask Questions</h2>
+                        <h2>Edit Question</h2>
                         <div class="ml-auto">
                             {{-- If we click the button, we will go to the create page --}}
                             <a href="{{ route('questions.index') }}" class="btn btn-outline-secondary">Back to all Question</a>
@@ -16,8 +16,12 @@
                     </div>
                 </div>
                 <div class="card-body">
-                   <form action="{{ route('questions.store') }}" method="post">
-                        @include ("questions._form", ['buttonText' => "Ask Question"])
+                    {{-- Pass Question instance --}}
+                    {{-- We can't just change method="put", it will not work --}}
+                   <form action="{{ route('questions.update', $question->id) }}" method="post">
+                    {{-- We have to add a line here to put method, it's a Laravel syntax --}}
+                        {{ method_field('PUT') }}
+                        @include ("questions._form", ['buttonText' => "Update Question"])
                    </form>
                 </div>
             </div>
