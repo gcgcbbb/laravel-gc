@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Question;
 use Illuminate\Http\Request;
+use App\Http\Requests\AskQuestionRequest;
 // use Illuminate\Pagination\Paginator;
 
 
@@ -38,9 +39,12 @@ class QuestionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AskQuestionRequest $request)
     {
-        //
+        // ->questions(): Add value to the Question Model
+        $request->user()->questions()->create($request->only('title', 'body'));
+
+        return redirect()->route('questions.index')->with('success', "Your question has been submitted");
     }
 
     /**
