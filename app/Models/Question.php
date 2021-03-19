@@ -36,7 +36,7 @@ class Question extends Model
     public function getStatusAttribute()
     {
         // Return three different statuses for three diffrent conditions;
-        if ($this->answers > 0) {
+        if ($this->answers_count > 0) {
             if ($this->best_answer_id){
                 return "answered-accepted";
             }
