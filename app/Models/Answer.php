@@ -35,6 +35,10 @@ class Answer extends Model
             // We don't need to call save() method.
             // It's called behind the scheme when we call increment() method.
         });
+
+        static::deleted(function($answer) {
+            $answer->question->decrement('answers_count');
+        });
     }
 
     public function getCreatedDateAttribute()
