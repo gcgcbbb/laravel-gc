@@ -14,17 +14,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // Each time a user credit will do something elese;
-        \App\Models\User::factory(3)->create()->each(function($u) {
-            $u->questions()
-              ->saveMany(
-                  \App\Models\Question::factory(rand(1, 5))->make()
-              )
-              ->each(function($q) {
-                $q->answers()->saveMany(
-                    \App\Models\Answer::factory(rand(1, 5))->make()
-                );
-              });
-        });
+        $this->call([
+            UsersQuestionsAnswersTableSeeder::class,
+            FavoritesTableSeeder::class,
+        ]);
         // \App\Models\User::factory(10)->create();
     }
 }
