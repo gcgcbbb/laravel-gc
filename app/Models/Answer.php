@@ -32,8 +32,6 @@ class Answer extends Model
 
         static::created(function ($answer) {
             $answer->question->increment('answers_count');
-            // We don't need to call save() method.
-            // It's called behind the scheme when we call increment() method.
         });
 
         static::deleted(function($answer) {
@@ -49,6 +47,16 @@ class Answer extends Model
     public function getStatusAttribute()
     {
         return $this->id === $this->question->best_answer_id ? 'vote-accepted' : '';
+    }
+
+    public function getIsBestAttribute()
+    {
+        return $this->isBest();
+    }
+
+    public function isBest()
+    {
+        return $this->id === $this->question->best_answer_id;
     }
 
 }

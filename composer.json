@@ -16,7 +16,8 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",
         "laravel/helpers": "^1.4",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "twbs/bootstrap": "4.2.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
