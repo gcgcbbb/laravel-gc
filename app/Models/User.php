@@ -77,7 +77,7 @@ class User extends Authenticatable
     {
         $voteQuestions = $this->voteQuestions();
         if ($voteQuestions->where('votable_id', $question->id)->exists()) {
-            $voteQuestions->updateExsitingPivot($question, ['vote' => $vote]);
+            $voteQuestions->updateExistingPivot($question, ['vote' => $vote]);
         }
         else {
             $voteQuestions->attach($question, ['vote' => $vote]);
