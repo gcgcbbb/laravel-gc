@@ -53,7 +53,7 @@
                                     {{-- As we are call the attribute, we only need to call it in snake case --}}
                                     <small class="text-muted">{{ $question->created_date }}</small>
                                 </p>
-                                {{ Str::limit($question->body, 250) }}
+                                <div class="excerpt">{{ $question->excerpt(350) }}</div>
                             </div>
                         </div>
                         <hr>
