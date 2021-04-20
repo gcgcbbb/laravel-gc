@@ -12,7 +12,7 @@ class Answer extends Model
 
     protected $fillable = ['body', 'user_id'];
 
-    protected $appends = ['created_date', 'body_html'];
+    protected $appends = ['created_date', 'body_html', 'is_best'];
 
     public function question()
     {
@@ -49,7 +49,7 @@ class Answer extends Model
 
     public function getStatusAttribute()
     {
-        return $this->id === $this->question->best_answer_id ? 'vote-accepted' : '';
+        return $this->isBest() ? 'vote-accepted' : '';
     }
 
     public function getIsBestAttribute()
