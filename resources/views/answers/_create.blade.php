@@ -1,6 +1,4 @@
-{{-- Ths file will be included in another view --}}
 <div class="row mt-4">
-    {{-- BootStrap part --}}
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
