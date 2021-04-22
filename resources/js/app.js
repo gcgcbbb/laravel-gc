@@ -19,7 +19,6 @@ Vue.use(Authorization);
 
 
 import Vue from 'vue';
-// authorize('modify', answer);
 
 /**
  * The following block of code may be used to automatically register your
@@ -35,6 +34,7 @@ import Vue from 'vue';
 Vue.component('user-info', require('./components/UserInfo.vue').default);
 Vue.component('vote', require('./components/Vote.vue').default);
 Vue.component('answers', require('./components/Answers.vue').default);
+Vue.component('question', require('./components/Question.vue').default);
 
 
 /**
