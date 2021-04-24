@@ -11,7 +11,7 @@
                     
                     <div class="media"> 
                         <div class="media-body">
-                            <div class="form-control">
+                            <div class="form-group">
                                 <m-editor :body="body">
                                     <textarea rows="10" v-model="body" class="form-control" required></textarea>
                                 </m-editor>
@@ -62,7 +62,6 @@
 import Vote from './Vote.vue';
 import UserInfo from './UserInfo.vue';
 import modification from '../mixins/modification.js';
-import Prism from 'prismjs';
 import MEditor from './MEditor.vue';
 
 export default {
@@ -103,8 +102,6 @@ export default {
         restoreFromCache () {
             this.body = this.beforeEditCache.body;
             this.title = this.beforeEditCache.title;
-            const el = this.$ref.bodyHtml;
-            if (el) Prism.highlightAllUnder(el);
         },
 
         payload () {
