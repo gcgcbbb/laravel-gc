@@ -21,9 +21,11 @@
 
 <script>
 import MarkDownIt from 'markdown-it';
+import prism from 'markdown-it-prism';
 import autosize from 'autosize';
 
 const md = new MarkDownIt();
+md.use(prism);
 
 export default {
     props: ['body'],
