@@ -26,10 +26,6 @@ class Question extends Model
         $this->attributes['slug'] = Str::slug($value);
     }
 
-    // public function setBodyAttribute($value) {
-    //     $this->attributes['body'] = clean($value);
-    // }
-
     public function getUrlAttribute()
     {
         return route("questions.show", $this->slug);
@@ -71,7 +67,7 @@ class Question extends Model
 
     public function favorites()
     {
-        return $this->belongsToMany(User::class, 'favorites')->withTimestamps(); //, 'question_id', 'user_id');
+        return $this->belongsToMany(User::class, 'favorites')->withTimestamps();
     }
 
     public function isFavorited()

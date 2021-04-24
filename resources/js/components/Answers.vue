@@ -25,6 +25,7 @@
 <script>
 import Answer from './Answer.vue';
 import NewAnswer from './NewAnswer.vue';
+
 export default {
     props: ['question'],
 
