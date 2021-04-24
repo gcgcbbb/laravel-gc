@@ -13636,6 +13636,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Answer_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Answer.vue */ "./resources/js/components/Answer.vue");
 /* harmony import */ var _NewAnswer_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NewAnswer.vue */ "./resources/js/components/NewAnswer.vue");
+/* harmony import */ var _mixins_highlight_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mixins/highlight.js */ "./resources/js/mixins/highlight.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -13674,8 +13675,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['question'],
+  mixins: [_mixins_highlight_js__WEBPACK_IMPORTED_MODULE_2__.default],
   data: function data() {
     return {
       questionId: this.question.id,
@@ -13689,24 +13692,29 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   methods: {
     add: function add(answer) {
+      var _this = this;
+
       this.answers.push(answer);
       this.count++;
+      this.$nextTick(function () {
+        _this.highlight("answer-".concat(answer.id));
+      });
     },
     remove: function remove(index) {
       this.answers.splice(index, 1);
       this.count--;
     },
     fetch: function fetch(endpoint) {
-      var _this = this;
+      var _this2 = this;
 
       axios.get(endpoint).then(function (_ref) {
-        var _this$answers;
+        var _this2$answers;
 
         var data = _ref.data;
 
-        (_this$answers = _this.answers).push.apply(_this$answers, _toConsumableArray(data.data));
+        (_this2$answers = _this2.answers).push.apply(_this2$answers, _toConsumableArray(data.data));
 
-        _this.nextUrl = data.next_page_url;
+        _this2.nextUrl = data.next_page_url;
       });
     }
   },
@@ -14441,7 +14449,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   methods: {
     highlight: function highlight() {
-      var el = this.$refs.bodyHtml;
+      var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+      var el;
+
+      if (!id) {
+        el = this.$refs.bodyHtml;
+      } else {
+        el = document.getElementById(id);
+      }
+
       if (el) prismjs__WEBPACK_IMPORTED_MODULE_0___default().highlightAllUnder(el);
     }
   }
@@ -69097,6 +69113,7 @@ var render = function() {
           [
             _c("div", {
               ref: "bodyHtml",
+              attrs: { id: _vm.uniqueName },
               domProps: { innerHTML: _vm._s(_vm.bodyHtml) }
             }),
             _vm._v(" "),
