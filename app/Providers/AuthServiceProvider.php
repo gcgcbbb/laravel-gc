@@ -8,6 +8,7 @@ use App\Models\Question;
 use App\Models\Answer;
 use App\Policies\QuestionPolicy;
 use App\Policies\AnswerPolicy;
+use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -37,6 +38,8 @@ class AuthServiceProvider extends ServiceProvider
         \Gate::define('delete-question', function($user, $question){
             return $user->id === $question->user_id;
         });
+
+        Passport::routes();
         
     }
 }
