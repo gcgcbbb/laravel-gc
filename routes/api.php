@@ -2,15 +2,20 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Api\QuestionsController;
-use App\Http\Controllers\Api\AnswersController;
-use App\Http\Controllers\Api\QuestionDetailsController;
-use App\Http\Controllers\Api\VoteQuestionController;
-use App\Http\Controllers\Api\VoteAnswerController;
-use App\Http\Controllers\Api\AcceptAnswerController;
-use App\Http\Controllers\Api\FavoritesController;
-use App\Http\Controllers\Api\MyPostsController;
+use App\Http\Controllers\Api\{
+        QuestionsController,
+        AnswersController,
+        QuestionDetailsController,
+        VoteQuestionController,
+        VoteAnswerController,
+        AcceptAnswerController,
+        FavoritesController,
+        MyPostsController
+    };
+use App\Http\Controllers\Api\Auth\{
+        LoginController,
+        RegisterController
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +29,8 @@ use App\Http\Controllers\Api\MyPostsController;
 */
 
 
-Route::post('/token', [LoginController::class, 'getToken']);
+Route::post('/login', [LoginController::class, 'store']);
+Route::post('/register', RegisterController::class);
 Route::get('/questions', [QuestionsController::class, 'index']);
 Route::get('/questions/{question}/answers', [AnswersController::class, 'index']);
 
@@ -39,6 +45,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/questions/{question}/favorites',  [FavoritesController::class, 'store']);
     Route::delete('/questions/{question}/favorites',  [FavoritesController::class, 'destroy']);
     Route::get('/my-posts', MyPostsController::class);
+    Route::delete('/logout', [LoginController::class, 'destroy']);
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
