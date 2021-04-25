@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Http\Requests\AskQuestionRequest;
-// use Illuminate\Pagination\Paginator;
 
 
 class QuestionsController extends Controller
