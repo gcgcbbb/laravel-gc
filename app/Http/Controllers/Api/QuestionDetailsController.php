@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Question;
 use App\Http\Resources\QuestionResource;
+use App\Http\Resources\QuestionDetailsResource;
+
 
 class QuestionDetailsController extends Controller
 {
@@ -19,6 +21,6 @@ class QuestionDetailsController extends Controller
     {
         $question->increment('views');
 
-        return new QuestionResource($question);
+        return new QuestionDetailsResource($question);
     }
 }
