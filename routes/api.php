@@ -6,6 +6,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Api\QuestionsController;
 use App\Http\Controllers\Api\AnswersController;
 use App\Http\Controllers\Api\QuestionDetailsController;
+use App\Http\Controllers\Api\VoteQuestionController;
+use App\Http\Controllers\Api\VoteAnswerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +30,8 @@ Route::get('/questions/{question}-{slug}', QuestionDetailsController::class);
 Route::middleware('auth:api')->group(function () {
     Route::apiResource('/questions', QuestionsController::class)->except('index');
     Route::apiResource('/questions.answers', AnswersController::class)->except('index');
+    Route::post('/questions/{question}/vote', VoteQuestionController::class);
+    Route::post('/answers/{answer}/vote', VoteAnswerController::class);
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
