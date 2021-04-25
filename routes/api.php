@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Api\QuestionController;
+use App\Http\Controllers\Api\QuestionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,8 +16,13 @@ use App\Http\Controllers\Api\QuestionController;
 |
 */
 
+
 Route::post('/token', [LoginController::class, 'getToken']);
-Route::get('/questions', [QuestionController::class, 'index']);
+Route::get('/questions', [QuestionsController::class, 'index']);
+
+Route::middleware('auth:api')->group(function () {
+    Route::apiResource('/questions', QuestionsController::class)->except('index');
+});
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
