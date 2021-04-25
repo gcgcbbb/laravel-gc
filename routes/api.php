@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Api\QuestionsController;
+use App\Http\Controllers\Api\QuestionDetailsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,8 @@ use App\Http\Controllers\Api\QuestionsController;
 
 Route::post('/token', [LoginController::class, 'getToken']);
 Route::get('/questions', [QuestionsController::class, 'index']);
+
+Route::get('/questions/{question}-{slug}', QuestionDetailsController::class);
 
 Route::middleware('auth:api')->group(function () {
     Route::apiResource('/questions', QuestionsController::class)->except('index');
