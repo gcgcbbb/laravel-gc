@@ -2,7 +2,11 @@
     <div>
         <div class="card-body">
             <div v-if="questions.length">
-                <question-excerpt v-for="question in questions" :question="question" :key="question.id"></question-excerpt>
+                <question-excerpt 
+                    @deleted="remove(index)" 
+                    v-for="(question, index) in questions" 
+                    :question="question" 
+                    :key="question.id"></question-excerpt>
             </div>
             <div v-else class="alert alert-warning">
                 <strong>Sorry</strong> There are no questions available.
@@ -11,7 +15,6 @@
         <div class="card-footer">
             <pagination :meta="meta" :links="links"></pagination>
         </div>
-         <!-- Pagination goes here -->               
     </div>
 </template>
 
@@ -41,6 +44,11 @@ export default {
     },
 
     methods: {
+        remove (index) {
+            this.questions.splice(index, 1)
+            this.count--
+        },
+
         fetchQuestions () {
             axios.get('/questions', { params: this.$route.query })
                  .then(({ data }) => {
