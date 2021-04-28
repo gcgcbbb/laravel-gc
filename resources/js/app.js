@@ -18,9 +18,10 @@ import Spinner from './components/Spinner'
  
 Vue.use(VueIziToast);
 Vue.use(Authorization);
-
+Vue.component('spinner', Spinner);
 
 import Vue from 'vue';
+import axios from 'axios';
 
 /**
  * The following block of code may be used to automatically register your
@@ -30,7 +31,7 @@ import Vue from 'vue';
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-Vue.component('spinner', Spinner);
+
 
 
 
@@ -45,26 +46,37 @@ const app = new Vue({
 
     data: {
         loading: false,
+        interceptor: null
     },
 
     created () {
-        // Add a request interceptor
-        axios.interceptors.request.use((config) => {
-            this.loading = true
-            return config;
-        }, (error) => {
-            this.loading = false
-            return Promise.reject(error);
-        });
+        this.enableInterceptor();
+    },
 
-        // Add a response interceptor
-        axios.interceptors.response.use((response) => {
-            this.loading = false
-            return response;
-        }, (error) => {
-            this.loading = false
-            return Promise.reject(error);
-        });
+    methods: {
+        enableInterceptor () {
+            // Add a request interceptor
+            this.interceptor = axios.interceptors.request.use((config) => {
+                this.loading = true
+                return config;
+            }, (error) => {
+                this.loading = false
+                return Promise.reject(error);
+            });
+
+            // Add a response interceptor
+            axios.interceptors.response.use((response) => {
+                this.loading = false
+                return response;
+            }, (error) => {
+                this.loading = false
+                return Promise.reject(error);
+            });
+        },
+
+        disableInterceptor () {
+            axios.interceptors.request.eject(this.interceptor)
+        }
     },
 
     router

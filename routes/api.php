@@ -30,7 +30,9 @@ use App\Http\Controllers\Api\Auth\{
 
 
 Route::post('/login', [LoginController::class, 'store']);
+Route::delete('/logout', [LoginController::class, 'destroy'])->middleware('auth.api');
 Route::post('/register', RegisterController::class);
+
 Route::get('/questions', [QuestionsController::class, 'index']);
 Route::get('/questions/{question}/answers', [AnswersController::class, 'index']);
 
@@ -45,7 +47,6 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/questions/{question}/favorites',  [FavoritesController::class, 'store']);
     Route::delete('/questions/{question}/favorites',  [FavoritesController::class, 'destroy']);
     Route::get('/my-posts', MyPostsController::class);
-    Route::delete('/logout', [LoginController::class, 'destroy']);
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

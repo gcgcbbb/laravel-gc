@@ -12175,7 +12175,9 @@ __webpack_require__.r(__webpack_exports__);
   props: ['meta', 'links'],
   computed: {
     pagesInfo: function pagesInfo() {
-      return "Page ".concat(this.meta.current_page, " of ").concat(this.meta.last_page);
+      var currentPage = this.meta.current_page || 1,
+          lastPage = this.meta.last_page || 1;
+      return "Page ".concat(currentPage, " of ").concat(lastPage);
     },
     isFirst: function isFirst() {
       return this.meta.current_page === 1;
@@ -12366,6 +12368,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _mixins_destroy__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../mixins/destroy */ "./resources/js/mixins/destroy.js");
+/* harmony import */ var _event_bus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../event-bus */ "./resources/js/event-bus.js");
 //
 //
 //
@@ -12405,6 +12408,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mixins: [_mixins_destroy__WEBPACK_IMPORTED_MODULE_0__.default],
@@ -12416,14 +12420,15 @@ __webpack_require__.r(__webpack_exports__);
     "delete": function _delete() {
       var _this = this;
 
-      axios["delete"]("/questions/".concat(this.question.id)).then(function (_ref) {
-        var data = _ref.data;
-
-        _this.$toast.success(data, message, "Success", {
+      this.$root.disableInterceptor();
+      axios["delete"]("/questions/".concat(this.question.id)).then(function (res) {
+        _this.$toast.success(res.data.message, "Success", {
           timeout: 2000
         });
 
-        _this.$emit('deleted');
+        _event_bus__WEBPACK_IMPORTED_MODULE_1__.default.$emit('deleted', _this.question.id);
+
+        _this.$root.enableInterceptor();
       });
     }
   },
@@ -12566,6 +12571,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _QuestionExcerpt_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./QuestionExcerpt.vue */ "./resources/js/components/QuestionExcerpt.vue");
 /* harmony import */ var _Pagination_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Pagination.vue */ "./resources/js/components/Pagination.vue");
+/* harmony import */ var _event_bus__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../event-bus */ "./resources/js/event-bus.js");
 //
 //
 //
@@ -12586,7 +12592,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -12602,7 +12608,16 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
+    var _this = this;
+
     this.fetchQuestions();
+    _event_bus__WEBPACK_IMPORTED_MODULE_2__.default.$on('deleted', function (id) {
+      var index = _this.questions.findIndex(function (question) {
+        return id === question.id;
+      });
+
+      _this.remove(index);
+    });
   },
   watch: {
     "$route": 'fetchQuestions'
@@ -12613,15 +12628,15 @@ __webpack_require__.r(__webpack_exports__);
       this.count--;
     },
     fetchQuestions: function fetchQuestions() {
-      var _this = this;
+      var _this2 = this;
 
       axios.get('/questions', {
         params: this.$route.query
       }).then(function (_ref) {
         var data = _ref.data;
-        _this.questions = data.data;
-        _this.meta = data.meta;
-        _this.links = data.links;
+        _this2.questions = data.data;
+        _this2.meta = data.meta;
+        _this2.links = data.links;
       });
     }
   }
@@ -13009,9 +13024,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -13036,7 +13048,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   watch: {
-    "$route": "fetchPosts"
+    "$route": 'fetchPosts'
   }
 });
 
@@ -13151,6 +13163,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./router */ "./resources/js/router/index.js");
 /* harmony import */ var _components_Spinner__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/Spinner */ "./resources/js/components/Spinner.vue");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_6__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -13168,6 +13182,8 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js"
 
 vue__WEBPACK_IMPORTED_MODULE_5__.default.use((vue_izitoast__WEBPACK_IMPORTED_MODULE_0___default()));
 vue__WEBPACK_IMPORTED_MODULE_5__.default.use(_authorization_authorize__WEBPACK_IMPORTED_MODULE_2__.default);
+vue__WEBPACK_IMPORTED_MODULE_5__.default.component('spinner', _components_Spinner__WEBPACK_IMPORTED_MODULE_4__.default);
+
 
 /**
  * The following block of code may be used to automatically register your
@@ -13177,7 +13193,6 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.use(_authorization_authorize__WEBPACK_I
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-vue__WEBPACK_IMPORTED_MODULE_5__.default.component('spinner', _components_Spinner__WEBPACK_IMPORTED_MODULE_4__.default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -13187,27 +13202,36 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.component('spinner', _components_Spinne
 var app = new vue__WEBPACK_IMPORTED_MODULE_5__.default({
   el: '#app',
   data: {
-    loading: false
+    loading: false,
+    interceptor: null
   },
   created: function created() {
-    var _this = this;
+    this.enableInterceptor();
+  },
+  methods: {
+    enableInterceptor: function enableInterceptor() {
+      var _this = this;
 
-    // Add a request interceptor
-    axios.interceptors.request.use(function (config) {
-      _this.loading = true;
-      return config;
-    }, function (error) {
-      _this.loading = false;
-      return Promise.reject(error);
-    }); // Add a response interceptor
+      // Add a request interceptor
+      this.interceptor = axios__WEBPACK_IMPORTED_MODULE_6___default().interceptors.request.use(function (config) {
+        _this.loading = true;
+        return config;
+      }, function (error) {
+        _this.loading = false;
+        return Promise.reject(error);
+      }); // Add a response interceptor
 
-    axios.interceptors.response.use(function (response) {
-      _this.loading = false;
-      return response;
-    }, function (error) {
-      _this.loading = false;
-      return Promise.reject(error);
-    });
+      axios__WEBPACK_IMPORTED_MODULE_6___default().interceptors.response.use(function (response) {
+        _this.loading = false;
+        return response;
+      }, function (error) {
+        _this.loading = false;
+        return Promise.reject(error);
+      });
+    },
+    disableInterceptor: function disableInterceptor() {
+      axios__WEBPACK_IMPORTED_MODULE_6___default().interceptors.request.eject(this.interceptor);
+    }
   },
   router: _router__WEBPACK_IMPORTED_MODULE_3__.default
 });
@@ -69219,15 +69243,10 @@ var render = function() {
           : _vm.questions.length
           ? _c(
               "div",
-              _vm._l(_vm.questions, function(question, index) {
+              _vm._l(_vm.questions, function(question) {
                 return _c("question-excerpt", {
                   key: question.id,
-                  attrs: { question: question },
-                  on: {
-                    deleted: function($event) {
-                      return _vm.remove(index)
-                    }
-                  }
+                  attrs: { question: question }
                 })
               }),
               1
@@ -69615,7 +69634,7 @@ var render = function() {
                                 "span",
                                 {
                                   staticClass: "post-badge",
-                                  class: { accpeted: post.accepted }
+                                  class: { accepted: post.accepted }
                                 },
                                 [_vm._v(_vm._s(post.type))]
                               ),
@@ -69624,7 +69643,7 @@ var render = function() {
                                 "span",
                                 {
                                   staticClass: "ml-4 votes-count",
-                                  class: { accpeted: post.accepted }
+                                  class: { accepted: post.accepted }
                                 },
                                 [_vm._v(_vm._s(post.votes_count))]
                               )

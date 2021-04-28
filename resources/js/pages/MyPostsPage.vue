@@ -6,7 +6,7 @@
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs">
                             <li class="nav-item">
-                                <router-link exact :to="{ name: 'my-posts'}" class="nav-link">All</router-link>
+                                <router-link exact :to="{ name: 'my-posts' }" class="nav-link">All</router-link>
                             </li>
                             <li class="nav-item">
                                 <router-link exact :to="{ name: 'my-posts', query: { type: 'questions' } }" class="nav-link">Questions</router-link>
@@ -22,8 +22,8 @@
                             <li class="list-group-item" v-for="(post, index) in posts" :key="index">
                                 <div class="row">
                                     <div class="col">
-                                        <span class="post-badge" :class="{ accpeted: post.accepted }">{{ post.type }}</span>
-                                        <span class="ml-4 votes-count" :class="{ accpeted: post.accepted }">{{ post.votes_count }}</span>
+                                        <span class="post-badge" :class="{ accepted: post.accepted }">{{ post.type }}</span>
+                                        <span class="ml-4 votes-count" :class="{ accepted: post.accepted }">{{ post.votes_count }}</span>
                                     </div>
                                     <div class="col-md-9 text-left">{{ post.title }}</div>
                                     <div class="col text-right">{{ post.created_at }}</div>
@@ -45,27 +45,24 @@
 
 <style lang="scss" scoped>
     $color-green: rgba(95, 187, 126);
-    
     .votes-count {
         border: 1px solid #ddd;
         display: inline-block;
         min-width: 40px;
         text-align: center;
-
         &.accepted {
             background: $color-green;
             border: 1px solid $color-green;
             color: #fff;
         }
     }
-
+    
     .post-badge {
         border: 1px solid #ddd;
         display: inline-block;
         width: 25px;
         text-align: center;
         border-radius: 100%;
-
         &.accepted {
             border: 1px solid $color-green;
             color: $color-green;
@@ -80,11 +77,9 @@ export default {
             posts: []
         }
     },
-
     mounted () {
         this.fetchPosts()
     },
-
     methods: {
         fetchPosts () {
             axios.get('/my-posts', { params: this.$route.query })
@@ -94,9 +89,8 @@ export default {
                  .catch(err => console.log(err))
         }
     },
-
     watch: {
-        "$route": "fetchPosts"
+        "$route": 'fetchPosts'
     }
 }
 </script>

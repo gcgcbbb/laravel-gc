@@ -84,7 +84,7 @@ class QuestionsController extends Controller
         $this->authorize("delete", $question);
 
         $question->delete();
-
+        if (env('APP_ENV') == 'local') sleep(2);
         return response()->json([
             'message', "Your question has been deleted",
         ]);
