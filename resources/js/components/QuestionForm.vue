@@ -19,7 +19,12 @@
             </m-editor>
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-outline-primary btn-lg">{{ buttonText }}</button>
+            <button type="submit" class="btn btn-outline-primary btn-lg">
+                <div class="spinner" :style="getMinWidth">
+                    <spinner :small="true" v-if="$root.loading"></spinner>
+                    <span v-else>{{ buttonText }}</span>
+                </div>
+            </button>
         </div>
     </form>
 </template>
@@ -33,6 +38,10 @@ export default {
         isEdit: {
             type: Boolean,
             default: false
+        },
+        minWidth: {
+            type: Number,
+            default: 109.61
         }
     },
 
@@ -60,6 +69,12 @@ export default {
     computed: {
         buttonText () {
             return this.isEdit ? 'Update Question' : 'Ask Question'
+        },
+
+        getMinWidth () {
+            return {
+                minWidth: this.minWidth + 'px'
+            }
         }
     },
 

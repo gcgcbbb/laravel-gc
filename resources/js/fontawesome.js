@@ -5,8 +5,9 @@ config.autoReplaceSvg = 'nest'
 import {faCaretUp,
         faCaretDown,
         faStar,
-        faCheck } from '@fortawesome/free-solid-svg-icons';
+        faCheck, 
+        faSpinner } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faCaretUp, faCaretDown, faCheck, faStar);
+library.add(faCaretUp, faCaretDown, faCheck, faStar, faSpinner);
 
 dom.watch();
