@@ -10,6 +10,7 @@ use Parsedown;
 class Question extends Model
 {
      
+    
     use HasFactory;
     use VotableTrait;
 
@@ -21,7 +22,8 @@ class Question extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function setTitleAttribute($value) {
+    public function setTitleAttribute($value) 
+    {
         $this->attributes['title'] = $value;
         $this->attributes['slug'] = Str::slug($value);
     }
@@ -39,7 +41,7 @@ class Question extends Model
 
     public function getStatusAttribute()
     {
-        // Return three different statuses for three diffrent conditions;
+        // Return three different statuses for three different conditions;
         if ($this->answers_count > 0) {
             if ($this->best_answer_id){
                 return "answered-accepted";
